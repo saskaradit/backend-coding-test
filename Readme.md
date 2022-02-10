@@ -52,6 +52,7 @@ Creates a rider document
 POST /rides
 ````
 **Requests Body**
+
 When creating a ride, client needs to fill these request body in the following format:
 ```javascript
 {
@@ -81,6 +82,7 @@ GET /rides/:id
 
 
 **Responses**
+
 Rides API returns the response in the following format:
 ```javascript
 [
