@@ -1,6 +1,7 @@
 'use strict'
 
 const request = require('supertest')
+const assert = require('assert')
 
 const sqlite3 = require('sqlite3').verbose()
 const db = new sqlite3.Database(':memory:')
@@ -27,6 +28,28 @@ describe('API tests', () => {
         .get('/health')
         .expect('Content-Type', /text/)
         .expect(200, done)
+    })
+  })
+  describe('Rides API', () => {
+    it('should return error message if there is no rides', async () => {
+      const response = await request(app).get('/rides').send()
+      assert.equal(response.body.error_code, 'RIDES_NOT_FOUND_ERROR')
+    })
+    it('should return error message if the ride is not found', async () => {
+      const response = await request(app).get('/rides/10').send()
+      assert.equal(response.body.error_code, 'RIDES_NOT_FOUND_ERROR')
+    })
+    it('can create a new ride', async () => {
+      const response = await request(app).post('/rides').send({
+        start_lat: 71,
+        start_long: 100,
+        end_lat: 79,
+        end_long: 120,
+        rider_name: 'Rad',
+        driver_name: 'Hans',
+        driver_vehicle: 'Ducatti',
+      })
+      assert.equal(response.body[0].rideID, 1)
     })
   })
 })
