@@ -20,10 +20,7 @@ Below will be your set of tasks to accomplish. Please work on each of these task
   - [Tasks](#tasks)
     - [Documentation](#documentation)
       - [Healthcheck](#healthcheck)
-      - [Responses](#responses)
       - [Rides](#rides)
-      - [Requests Body](#requests-body)
-      - [Responses](#responses-1)
       - [Success Criteria](#success-criteria)
     - [Implement Tooling](#implement-tooling)
       - [Success Criteria](#success-criteria-1)
@@ -44,7 +41,7 @@ Check if the instance (server) is up and running.
 ```http
 GET /health
 ```
-#### Responses
+**Responses**
 ```javascript
 Healthy
 ```
@@ -54,7 +51,7 @@ Creates a rider document
 ````http
 POST /rides
 ````
-#### Requests Body
+**Requests Body**
 ```javascript
 {
     "start_lat": Number,
@@ -66,7 +63,7 @@ POST /rides
     "driver_vehicle": string
 }
 ```
-#### Responses
+**Responses**
 ```javascript
 [
     {
