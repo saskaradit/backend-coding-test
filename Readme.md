@@ -15,21 +15,96 @@ The goal of these exercises are to assess your proficiency in software engineeri
 
 Below will be your set of tasks to accomplish. Please work on each of these tasks in order. Success criteria will be defined clearly for each task
 
-1. [Documentation](#documentation)
-2. [Implement Tooling](#implement-tooling)
-3. [Implement Pagination](#implement-pagination)
-4. [Refactoring](#refactoring)
-5. [Security](#security)
-6. [Load Testing](#load-testing)
+- [Xendit Coding Exercise](#xendit-coding-exercise)
+  - [Setup](#setup)
+  - [Tasks](#tasks)
+    - [Documentation](#documentation)
+      - [Healthcheck](#healthcheck)
+      - [Rides](#rides)
+      - [Success Criteria](#success-criteria)
+    - [Implement Tooling](#implement-tooling)
+      - [Success Criteria](#success-criteria-1)
+    - [Implement Pagination](#implement-pagination)
+    - [Refactoring](#refactoring)
+      - [Success Criteria](#success-criteria-2)
+    - [Security](#security)
+      - [Success Criteria](#success-criteria-3)
+    - [Load Testing](#load-testing)
+      - [Success Criteria](#success-criteria-4)
 
 ### Documentation
 
 Please deliver documentation of the server that clearly explains the goals of this project and clarifies the API response that is expected.
 
+#### Healthcheck
+Check if the instance (server) is up and running.
+```http
+GET /health
+```
+**Responses**
+```javascript
+Healthy
+```
+
+#### Rides
+Creates a rider document
+````http
+POST /rides
+````
+**Requests Body**
+
+When creating a ride, client needs to fill these request body in the following format:
+```javascript
+{
+    "start_lat": Number,
+    "start_long": Number,
+    "end_lat": Number,
+    "end_long": Number,
+    "rider_name": String,
+    "driver_name": String,
+    "driver_vehicle": String
+}
+```
+
+
+Get all rider documents
+````http
+GET /rides
+````
+
+Get a specific rider document
+````http
+GET /rides/:id
+````
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `number` | **Required**. RideId |
+
+
+**Responses**
+
+Rides API returns the response in the following format:
+```javascript
+[
+    {
+        "rideID": Number,
+        "startLat": Number,
+        "startLong": Number,
+        "endLat": Number,
+        "endLong": Number,
+        "riderName": String,
+        "driverName": String,
+        "driverVehicle": String,
+        "created": Date
+    }
+]
+```
+
+
 #### Success Criteria
 
 1. A pull request against `master` of your fork with a clear description of the change and purpose and merge it
-3. **[BONUS]** Create an easy way to deploy and view the documentation in a web format and include instructions to do so
+2. **[BONUS]** Create an easy way to deploy and view the documentation in a web format and include instructions to do so
 
 ### Implement Tooling
 
