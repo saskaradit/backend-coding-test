@@ -52,18 +52,36 @@ Creates a rider document
 POST /rides
 ````
 **Requests Body**
+When creating a ride, client needs to fill these request body in the following format:
 ```javascript
 {
     "start_lat": Number,
     "start_long": Number,
     "end_lat": Number,
     "end_long": Number,
-    "rider_name": string,
-    "driver_name": string,
-    "driver_vehicle": string
+    "rider_name": String,
+    "driver_name": String,
+    "driver_vehicle": String
 }
 ```
+
+
+Get all rider documents
+````http
+GET /rides
+````
+
+Get a specific rider document
+````http
+GET /rides/:id
+````
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `number` | **Required**. RideId |
+
+
 **Responses**
+Rides API returns the response in the following format:
 ```javascript
 [
     {
@@ -72,9 +90,9 @@ POST /rides
         "startLong": Number,
         "endLat": Number,
         "endLong": Number,
-        "riderName": string,
-        "driverName": string,
-        "driverVehicle": string,
+        "riderName": String,
+        "driverName": String,
+        "driverVehicle": String,
         "created": Date
     }
 ]
