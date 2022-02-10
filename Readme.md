@@ -15,21 +15,79 @@ The goal of these exercises are to assess your proficiency in software engineeri
 
 Below will be your set of tasks to accomplish. Please work on each of these tasks in order. Success criteria will be defined clearly for each task
 
-1. [Documentation](#documentation)
-2. [Implement Tooling](#implement-tooling)
-3. [Implement Pagination](#implement-pagination)
-4. [Refactoring](#refactoring)
-5. [Security](#security)
-6. [Load Testing](#load-testing)
+- [Xendit Coding Exercise](#xendit-coding-exercise)
+  - [Setup](#setup)
+  - [Tasks](#tasks)
+    - [Documentation](#documentation)
+      - [Healthcheck](#healthcheck)
+      - [Responses](#responses)
+      - [Rides](#rides)
+      - [Requests Body](#requests-body)
+      - [Responses](#responses-1)
+      - [Success Criteria](#success-criteria)
+    - [Implement Tooling](#implement-tooling)
+      - [Success Criteria](#success-criteria-1)
+    - [Implement Pagination](#implement-pagination)
+    - [Refactoring](#refactoring)
+      - [Success Criteria](#success-criteria-2)
+    - [Security](#security)
+      - [Success Criteria](#success-criteria-3)
+    - [Load Testing](#load-testing)
+      - [Success Criteria](#success-criteria-4)
 
 ### Documentation
 
 Please deliver documentation of the server that clearly explains the goals of this project and clarifies the API response that is expected.
 
+#### Healthcheck
+Check if the instance (server) is up and running.
+```http
+GET /health
+```
+#### Responses
+```javascript
+Healthy
+```
+
+#### Rides
+Creates a rider document
+````http
+POST /rides
+````
+#### Requests Body
+```javascript
+{
+    "start_lat": Number,
+    "start_long": Number,
+    "end_lat": Number,
+    "end_long": Number,
+    "rider_name": string,
+    "driver_name": string,
+    "driver_vehicle": string
+}
+```
+#### Responses
+```javascript
+[
+    {
+        "rideID": Number,
+        "startLat": Number,
+        "startLong": Number,
+        "endLat": Number,
+        "endLong": Number,
+        "riderName": string,
+        "driverName": string,
+        "driverVehicle": string,
+        "created": Date
+    }
+]
+```
+
+
 #### Success Criteria
 
 1. A pull request against `master` of your fork with a clear description of the change and purpose and merge it
-3. **[BONUS]** Create an easy way to deploy and view the documentation in a web format and include instructions to do so
+2. **[BONUS]** Create an easy way to deploy and view the documentation in a web format and include instructions to do so
 
 ### Implement Tooling
 
