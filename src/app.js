@@ -93,7 +93,7 @@ module.exports = (db) => {
             if (err) {
               return res.send({
                 error_code: 'SERVER_ERROR',
-                message: 'Unknown error',
+                message: 'Unknown error ' + err,
               })
             }
 
@@ -105,23 +105,30 @@ module.exports = (db) => {
   })
 
   app.get('/rides', (req, res) => {
-    db.all('SELECT * FROM Rides', function (err, rows) {
-      if (err) {
-        return res.send({
-          error_code: 'SERVER_ERROR',
-          message: 'Unknown error',
-        })
-      }
+    // default page to 1
+    const query = req.query.page ? req.query.page : 1
+    const currPage = (query - 1) * 2
+    // using offset on db reduces performance drastically
+    db.all(
+      `SELECT * FROM Rides WHERE rideId > ${currPage} ORDER BY rideID LIMIT 2`,
+      function (err, rows) {
+        if (err) {
+          return res.send({
+            error_code: 'SERVER_ERROR',
+            message: 'Unknown error ' + err,
+          })
+        }
 
-      if (rows.length === 0) {
-        return res.send({
-          error_code: 'RIDES_NOT_FOUND_ERROR',
-          message: 'Could not find any rides',
-        })
-      }
+        if (rows.length === 0) {
+          return res.send({
+            error_code: 'RIDES_NOT_FOUND_ERROR',
+            message: 'Could not find any rides',
+          })
+        }
 
-      res.send(rows)
-    })
+        res.send(rows)
+      }
+    )
   })
 
   app.get('/rides/:id', (req, res) => {

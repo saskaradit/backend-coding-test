@@ -28,10 +28,11 @@ db.serialize(() => {
 
   const app = require('./src/app')(db)
 
-  app.listen(port, () =>
+  app.listen(port, () => {
     logger.log({
       level: 'info',
       message: `App started and listening on port ${port}`,
     })
-  )
+    console.log(`App started and listening on port ${port}`)
+  })
 })
