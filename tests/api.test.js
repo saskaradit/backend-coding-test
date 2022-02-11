@@ -3,13 +3,14 @@
 const request = require('supertest')
 const assert = require('assert')
 
-const sqlite3 = require('sqlite3').verbose()
-const db = new sqlite3.Database(':memory:')
+const db = require('../src/config/db.config')
+const express = require('express')
 
-const app = require('../src/app')(db)
-const buildSchemas = require('../src/schemas')
+const rideRoutes = require('../src/routes/rides')
 const healthRoute = require('../src/routes/health')
-app.use(healthRoute)
+const app = express()
+app.use('/health', healthRoute)
+app.use('/rides', rideRoutes)
 
 const createRide = () => {
   return request(app).post('/rides').send(rider)
@@ -28,16 +29,16 @@ const rider = {
 describe('API tests', () => {
   beforeEach((done) => {
     // Resets the table for each test, also resets the auto_increment to zero
-    db.run(`DROP TABLE IF EXISTS rides`, function (err) {
+    db.getDB().run(`DROP TABLE IF EXISTS rides`, function (err) {
       if (err) {
         return done(err)
       }
     })
-    db.serialize((err) => {
+    db.getDB().serialize((err) => {
       if (err) {
         return done(err)
       }
-      buildSchemas(db)
+      db.initSchema()
     })
     done()
   })
@@ -132,6 +133,12 @@ describe('API tests', () => {
       const response = await request(app).get('/rides/2').send()
       assert.equal(response.body[0].rideID, 2)
       assert.equal(response.body.length, 1)
+    })
+    it('throws an error if driver not found', async () => {
+      await createRide()
+      const response = await request(app).get('/rides/2').send()
+      assert.equal(response.body.error_code, 'RIDES_NOT_FOUND_ERROR')
+      assert.equal(response.body.message, 'Could not find any rides')
     })
     it('can fetch rides on a specific page', async () => {
       await createRide()

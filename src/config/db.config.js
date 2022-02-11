@@ -19,7 +19,9 @@ module.exports = {
             )
         `
 
-    db.run(createRideTableSchema)
+    db.serialize(() => {
+      db.run(createRideTableSchema)
+    })
   },
   getDB: function () {
     return db
