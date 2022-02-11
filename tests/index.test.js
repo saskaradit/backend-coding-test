@@ -23,7 +23,7 @@ const createRide = () => {
   return request(app).post('/rides').send(rider)
 }
 
-describe('GET rides', () => {
+describe('GET /rides', () => {
   beforeEach((done) => {
     // Resets the table for each test, also resets the auto_increment to zero
     resetDB(db, done)

@@ -25,31 +25,30 @@ const rider = {
   driver_vehicle: 'Ducatti',
 }
 
-describe('API tests', () => {
+describe('GET /rides/:id', () => {
   beforeEach((done) => {
     // Resets the table for each test, also resets the auto_increment to zero
     resetDB(db, done)
     done()
   })
 
-  describe('Rides API', () => {
+  describe('Error message', () => {
     it('should return error message if the ride is not found', async () => {
       const response = await request(app).get('/rides/10').send()
       assert.equal(response.body.error_code, 'RIDES_NOT_FOUND_ERROR')
     })
-
-    it('can get a specific ride', async () => {
-      await createRide()
-      await createRide()
-      const response = await request(app).get('/rides/2').send()
-      assert.equal(response.body[0].rideID, 2)
-      assert.equal(response.body.length, 1)
-    })
-    it('throws an error if driver not found', async () => {
-      await createRide()
-      const response = await request(app).get('/rides/2').send()
-      assert.equal(response.body.error_code, 'RIDES_NOT_FOUND_ERROR')
-      assert.equal(response.body.message, 'Could not find any rides')
-    })
+  })
+  it('can get a specific ride', async () => {
+    await createRide()
+    await createRide()
+    const response = await request(app).get('/rides/2').send()
+    assert.equal(response.body[0].rideID, 2)
+    assert.equal(response.body.length, 1)
+  })
+  it('throws an error if driver not found', async () => {
+    await createRide()
+    const response = await request(app).get('/rides/2').send()
+    assert.equal(response.body.error_code, 'RIDES_NOT_FOUND_ERROR')
+    assert.equal(response.body.message, 'Could not find any rides')
   })
 })

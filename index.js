@@ -20,7 +20,7 @@ app.get('*', async (req, res) => {
     .json({ error_code: 'ROUTE_NOT_FOUND_ERROR', message: 'Not found' })
   logger.log({
     level: 'error',
-    message: `ROUTE_NOT_FOUND_ERROR`,
+    message: { error_code: 'ROUTE_NOT_FOUND_ERROR', message: 'Not found' },
   })
 })
 

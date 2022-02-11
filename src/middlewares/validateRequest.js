@@ -12,7 +12,7 @@ function validateRequest(req, res, next) {
     startLongitude < -180 ||
     startLongitude > 180
   ) {
-    return res.send({
+    return res.status(400).send({
       error_code: 'VALIDATION_ERROR',
       message:
         'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
@@ -25,7 +25,7 @@ function validateRequest(req, res, next) {
     endLongitude < -180 ||
     endLongitude > 180
   ) {
-    return res.send({
+    return res.status(400).send({
       error_code: 'VALIDATION_ERROR',
       message:
         'End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
@@ -33,21 +33,21 @@ function validateRequest(req, res, next) {
   }
 
   if (typeof riderName !== 'string' || riderName.length < 1) {
-    return res.send({
+    return res.status(400).send({
       error_code: 'VALIDATION_ERROR',
       message: 'Rider name must be a non empty string',
     })
   }
 
   if (typeof driverName !== 'string' || driverName.length < 1) {
-    return res.send({
+    return res.status(400).send({
       error_code: 'VALIDATION_ERROR',
       message: 'Driver name must be a non empty string',
     })
   }
 
   if (typeof driverVehicle !== 'string' || driverVehicle.length < 1) {
-    return res.send({
+    return res.status(400).send({
       error_code: 'VALIDATION_ERROR',
       message: 'Driver vehicle must be a non empty string',
     })
