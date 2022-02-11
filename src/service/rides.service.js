@@ -1,4 +1,5 @@
 const db = require('../config/db.config').getDB()
+const logger = require('../config/logger.config')
 
 async function create(
   startLatitude,
@@ -29,6 +30,10 @@ async function create(
             error_code: 'SERVER_ERROR',
             message: 'Unknown error',
           }
+          logger.log({
+            level: 'error',
+            message: result,
+          })
         }
 
         db.all(
@@ -40,6 +45,10 @@ async function create(
                 error_code: 'SERVER_ERROR',
                 message: 'Unknown error ' + err,
               }
+              logger.log({
+                level: 'error',
+                message: result,
+              })
             } else {
               result = rows
             }
@@ -64,6 +73,10 @@ async function fetch(page = 0) {
             error_code: 'SERVER_ERROR',
             message: 'Unknown error ' + err,
           }
+          logger.log({
+            level: 'error',
+            message: result,
+          })
         }
 
         if (rows.length === 0) {
@@ -74,7 +87,6 @@ async function fetch(page = 0) {
         } else {
           result = rows
         }
-        console.log(result)
         resolve()
       }
     )
@@ -83,7 +95,38 @@ async function fetch(page = 0) {
   return result
 }
 
+async function get(id = 1) {
+  let result
+  const response = new Promise((resolve, reject) => {
+    db.all(`SELECT * FROM Rides WHERE rideID='${id}'`, function (err, rows) {
+      if (err) {
+        result = {
+          error_code: 'SERVER_ERROR',
+          message: 'Unknown error',
+        }
+        logger.log({
+          level: 'error',
+          message: result,
+        })
+      }
+
+      if (rows.length === 0) {
+        result = {
+          error_code: 'RIDES_NOT_FOUND_ERROR',
+          message: 'Could not find any rides',
+        }
+      } else {
+        result = rows
+      }
+      resolve()
+    })
+  })
+  await response
+  return result
+}
+
 module.exports = {
   create,
   fetch,
+  get,
 }

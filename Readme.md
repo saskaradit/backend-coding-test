@@ -104,6 +104,16 @@ Rides API returns the response in the following format:
 ]
 ```
 
+**Error Messages**
+
+Rides API returns the error response in the following format:
+```javascript
+{
+    "error_code": "ERROR_CODE",
+    "message": "error message"
+}
+```
+
 
 #### Success Criteria
 

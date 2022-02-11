@@ -9,19 +9,25 @@ async function create(req, res) {
   const driverName = req.body.driver_name
   const driverVehicle = req.body.driver_vehicle
   try {
-    res.send(
-      await ridesService.create(
-        startLatitude,
-        startLongitude,
-        endLatitude,
-        endLongitude,
-        riderName,
-        driverName,
-        driverVehicle
-      )
+    const response = await ridesService.create(
+      startLatitude,
+      startLongitude,
+      endLatitude,
+      endLongitude,
+      riderName,
+      driverName,
+      driverVehicle
     )
+    res.send(response)
+    logger.log({
+      level: 'info',
+      message: response,
+    })
   } catch (err) {
-    console.error(`Error while creating new rides`, err.message)
+    logger.log({
+      level: 'error',
+      message: `Error while creating a new ride`,
+    })
   }
 }
 
@@ -33,8 +39,23 @@ async function fetch(req, res) {
   try {
     res.send(await ridesService.fetch(currPage))
   } catch (error) {
-    console.error('Error while fetching')
+    logger.log({
+      level: 'error',
+      message: `Error while fetching`,
+    })
   }
 }
 
-module.exports = { create, fetch }
+async function get(req, res) {
+  const id = req.params.id
+  try {
+    res.send(await ridesService.get(id))
+  } catch (error) {
+    logger.log({
+      level: 'error',
+      message: `Error while getting the ride`,
+    })
+  }
+}
+
+module.exports = { create, fetch, get }
