@@ -1,6 +1,6 @@
 'use strict'
 
-const port = 8010
+const config = require('./src/config/config')
 
 const healthRoute = require('./src/routes/health')
 const rideRoutes = require('./src/routes/rides')
@@ -24,10 +24,10 @@ app.get('*', async (req, res) => {
   })
 })
 
-app.listen(port, () => {
+app.listen(config.port, () => {
   logger.log({
     level: 'info',
-    message: `App started and listening on port ${port}`,
+    message: `App started and listening on port ${config.port}`,
   })
-  console.log(`App started and listening on port ${port}`)
+  console.log(`App started and listening on port ${config.port}`)
 })

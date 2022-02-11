@@ -1,4 +1,10 @@
 function validateRequest(req, res, next) {
+  if (!req.is('application/json')) {
+    res.status(400).send({
+      error_code: 'REQUEST_ERROR',
+      message: 'Only JSON data type is acceptable',
+    })
+  }
   const startLatitude = Number(req.body.start_lat)
   const startLongitude = Number(req.body.start_long)
   const endLatitude = Number(req.body.end_lat)

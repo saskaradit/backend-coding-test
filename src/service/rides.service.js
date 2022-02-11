@@ -1,5 +1,6 @@
 const db = require('../config/db.config').getDB()
 const logger = require('../config/logger.config')
+const config = require('../config/config')
 
 async function create(ride) {
   var values = [
@@ -23,7 +24,10 @@ async function create(ride) {
           })
           logger.log({
             level: 'error',
-            message: result,
+            message: {
+              error_code: 'SERVER_ERROR',
+              message: 'Unknown error',
+            },
           })
         }
         db.all(
@@ -37,7 +41,10 @@ async function create(ride) {
               })
               logger.log({
                 level: 'error',
-                message: result,
+                message: {
+                  error_code: 'SERVER_ERROR',
+                  message: 'Unknown error',
+                },
               })
             }
             resolve(rows)
@@ -51,7 +58,9 @@ async function create(ride) {
 async function fetch(page = 0) {
   return new Promise((resolve, reject) => {
     db.all(
-      `SELECT * FROM Rides WHERE rideId > ${page} ORDER BY rideID LIMIT 2`,
+      `SELECT * FROM Rides WHERE rideId > ? ORDER BY rideID LIMIT ?`,
+      page,
+      config.limitRecord,
       function (err, rows) {
         if (err) {
           reject({
@@ -60,7 +69,10 @@ async function fetch(page = 0) {
           })
           logger.log({
             level: 'error',
-            message: result,
+            message: {
+              error_code: 'SERVER_ERROR',
+              message: 'Unknown error ' + err,
+            },
           })
         }
         if (rows.length === 0) {
@@ -77,7 +89,7 @@ async function fetch(page = 0) {
 
 async function get(id) {
   return new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM Rides WHERE rideID='${id}'`, function (err, rows) {
+    db.all(`SELECT * FROM Rides WHERE rideID=?`, id, function (err, rows) {
       if (err) {
         reject({
           error_code: 'SERVER_ERROR',
@@ -85,7 +97,10 @@ async function get(id) {
         })
         logger.log({
           level: 'error',
-          message: result,
+          message: {
+            error_code: 'SERVER_ERROR',
+            message: 'Unknown error ' + err,
+          },
         })
       }
       if (rows.length === 0) {

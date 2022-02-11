@@ -21,13 +21,13 @@ async function create(req, res) {
       driverVehicle
     )
     const response = await ridesService.create(ride)
-    res.send(response)
+    res.set('content-type', 'application/json').send(response)
     logger.log({
       level: 'info',
       message: response,
     })
   } catch (err) {
-    res.send(error)
+    res.send(err)
     logger.log({
       level: 'error',
       message: `Error while creating a new ride`,
@@ -41,7 +41,9 @@ async function fetch(req, res) {
   const currPage = (query - 1) * 2
   // using offset on db reduces performance drastically
   try {
-    res.send(await ridesService.fetch(currPage))
+    res
+      .set('content-type', 'application/json')
+      .send(await ridesService.fetch(currPage))
   } catch (error) {
     res.send(error)
     logger.log({
@@ -56,7 +58,7 @@ async function get(req, res) {
   try {
     res.send(await ridesService.get(id))
   } catch (error) {
-    res.send(error)
+    res.set('content-type', 'application/json').send(error)
     logger.log({
       level: 'error',
       message: `Error while getting the ride`,
