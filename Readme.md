@@ -49,8 +49,12 @@ Healthy
 #### Rides
 Creates a rider document
 ````http
-POST /rides
+POST /rides?pages=5
 ````
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `page` | `number` |  page number, defaults to 1 |
+
 **Requests Body**
 
 When creating a ride, client needs to fill these request body in the following format:
