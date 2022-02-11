@@ -48,7 +48,7 @@ Healthy
 
 #### Rides
   
-Get all rider documents
+Get rider documents on a specific page
 ````http
 GET /rides?pages=5
 ````
