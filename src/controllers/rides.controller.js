@@ -27,6 +27,7 @@ async function create(req, res) {
       message: response,
     })
   } catch (err) {
+    res.send(error)
     logger.log({
       level: 'error',
       message: `Error while creating a new ride`,
@@ -42,6 +43,7 @@ async function fetch(req, res) {
   try {
     res.send(await ridesService.fetch(currPage))
   } catch (error) {
+    res.send(error)
     logger.log({
       level: 'error',
       message: `Error while fetching`,
@@ -54,6 +56,7 @@ async function get(req, res) {
   try {
     res.send(await ridesService.get(id))
   } catch (error) {
+    res.send(error)
     logger.log({
       level: 'error',
       message: `Error while getting the ride`,
