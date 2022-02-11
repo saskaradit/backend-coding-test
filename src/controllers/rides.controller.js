@@ -1,4 +1,6 @@
 const ridesService = require('../service/rides.service')
+const Ride = require('../models/ride')
+const logger = require('../config/logger.config')
 
 async function create(req, res) {
   const startLatitude = Number(req.body.start_lat)
@@ -9,7 +11,7 @@ async function create(req, res) {
   const driverName = req.body.driver_name
   const driverVehicle = req.body.driver_vehicle
   try {
-    const response = await ridesService.create(
+    const ride = new Ride(
       startLatitude,
       startLongitude,
       endLatitude,
@@ -18,6 +20,7 @@ async function create(req, res) {
       driverName,
       driverVehicle
     )
+    const response = await ridesService.create(ride)
     res.send(response)
     logger.log({
       level: 'info',

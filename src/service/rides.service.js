@@ -1,23 +1,15 @@
 const db = require('../config/db.config').getDB()
 const logger = require('../config/logger.config')
 
-async function create(
-  startLatitude,
-  startLongitude,
-  endLatitude,
-  endLongitude,
-  riderName,
-  driverName,
-  driverVehicle
-) {
+async function create(ride) {
   var values = [
-    startLatitude,
-    startLongitude,
-    endLatitude,
-    endLongitude,
-    riderName,
-    driverName,
-    driverVehicle,
+    ride.startLatitude,
+    ride.startLongitude,
+    ride.endLatitude,
+    ride.endLongitude,
+    ride.riderName,
+    ride.driverName,
+    ride.driverVehicle,
   ]
   let result
   const response = new Promise((resolve, reject) => {
@@ -95,7 +87,7 @@ async function fetch(page = 0) {
   return result
 }
 
-async function get(id = 1) {
+async function get(id) {
   let result
   const response = new Promise((resolve, reject) => {
     db.all(`SELECT * FROM Rides WHERE rideID='${id}'`, function (err, rows) {
