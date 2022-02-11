@@ -47,6 +47,25 @@ Healthy
 ```
 
 #### Rides
+  
+Get rider documents on a specific page
+````http
+GET /rides?pages=5
+````
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `page` | `number` |  page number, defaults to 1 |
+
+
+Get a specific rider document
+````http
+GET /rides/:id
+````
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `number` | **Required**. RideId |
+
+
 Creates a rider document
 ````http
 POST /rides
@@ -66,21 +85,6 @@ When creating a ride, client needs to fill these request body in the following f
 }
 ```
 
-
-Get all rider documents
-````http
-GET /rides
-````
-
-Get a specific rider document
-````http
-GET /rides/:id
-````
-| Parameter | Type | Description |
-| :--- | :--- | :--- |
-| `id` | `number` | **Required**. RideId |
-
-
 **Responses**
 
 Rides API returns the response in the following format:
@@ -98,6 +102,16 @@ Rides API returns the response in the following format:
         "created": Date
     }
 ]
+```
+
+**Error Messages**
+
+Rides API returns the error response in the following format:
+```javascript
+{
+    "error_code": "ERROR_CODE",
+    "message": "error message"
+}
 ```
 
 

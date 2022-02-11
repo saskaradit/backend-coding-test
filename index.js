@@ -1,37 +1,33 @@
 'use strict'
 
-const express = require('express')
-const app = express()
 const port = 8010
 
-const bodyParser = require('body-parser')
-const jsonParser = bodyParser.json()
+const healthRoute = require('./src/routes/health')
+const rideRoutes = require('./src/routes/rides')
+const express = require('express')
+const logger = require('./src/config/logger.config')
 
-const sqlite3 = require('sqlite3').verbose()
-const db = new sqlite3.Database(':memory:')
+const db = require('./src/config/db.config')
+const app = express()
 
-const buildSchemas = require('./src/schemas')
+db.initSchema()
+app.use('/rides', rideRoutes)
+app.use('/health', healthRoute)
 
-const winston = require('winston')
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  defaultMeta: { service: 'user-service' },
-  transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' }),
-  ],
+app.get('*', async (req, res) => {
+  res
+    .status(404)
+    .json({ error_code: 'ROUTE_NOT_FOUND_ERROR', message: 'Not found' })
+  logger.log({
+    level: 'error',
+    message: { error_code: 'ROUTE_NOT_FOUND_ERROR', message: 'Not found' },
+  })
 })
 
-db.serialize(() => {
-  buildSchemas(db)
-
-  const app = require('./src/app')(db)
-
-  app.listen(port, () =>
-    logger.log({
-      level: 'info',
-      message: `App started and listening on port ${port}`,
-    })
-  )
+app.listen(port, () => {
+  logger.log({
+    level: 'info',
+    message: `App started and listening on port ${port}`,
+  })
+  console.log(`App started and listening on port ${port}`)
 })

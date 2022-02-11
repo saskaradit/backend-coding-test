@@ -3,15 +3,15 @@
 const request = require('supertest')
 const assert = require('assert')
 
-const sqlite3 = require('sqlite3').verbose()
-const db = new sqlite3.Database(':memory:')
+const db = require('../src/config/db.config')
+const express = require('express')
 
-const app = require('../src/app')(db)
-const buildSchemas = require('../src/schemas')
-
-const createRide = () => {
-  return request(app).post('/rides').send(rider)
-}
+const rideRoutes = require('../src/routes/rides')
+const healthRoute = require('../src/routes/health')
+const resetDB = require('./setup')
+const app = express()
+app.use('/health', healthRoute)
+app.use('/rides', rideRoutes)
 
 const rider = {
   start_lat: 71,
@@ -23,45 +23,13 @@ const rider = {
   driver_vehicle: 'Ducatti',
 }
 
-describe('API tests', () => {
+describe('POST /rides', () => {
   beforeEach((done) => {
     // Resets the table for each test, also resets the auto_increment to zero
-    db.run(`DROP TABLE IF EXISTS rides`, function (err) {
-      if (err) {
-        return done(err)
-      }
-    })
-    db.serialize((err) => {
-      if (err) {
-        return done(err)
-      }
-      buildSchemas(db)
-    })
+    resetDB(db, done)
     done()
   })
-
-  describe('GET /health', () => {
-    it('should return health', (done) => {
-      request(app)
-        .get('/health')
-        .expect('Content-Type', /text/)
-        .expect(200, done)
-    })
-  })
-
-  describe('Rides API', () => {
-    it('should return error message if there is no rides', async () => {
-      const response = await request(app).get('/rides').send()
-      assert.equal(response.body.error_code, 'RIDES_NOT_FOUND_ERROR')
-    })
-    it('should return error message if the ride is not found', async () => {
-      const response = await request(app).get('/rides/10').send()
-      assert.equal(response.body.error_code, 'RIDES_NOT_FOUND_ERROR')
-    })
-    it('can create a new ride with valid inputs', async () => {
-      const response = await request(app).post('/rides').send(rider)
-      assert.equal(response.body[0].rideID, 1)
-    })
+  describe('Error on client request', () => {
     it('throws an error if startLatitude and startLongitude is not valid', async () => {
       // make sure the copy is deep copy
       const invalidRider = JSON.parse(JSON.stringify(rider))
@@ -74,7 +42,6 @@ describe('API tests', () => {
         'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively'
       )
     })
-
     it('throws an error if endLatitude and endLongitude is not valid', async () => {
       const invalidRider = JSON.parse(JSON.stringify(rider))
       invalidRider.end_lat = 99
@@ -116,20 +83,9 @@ describe('API tests', () => {
         'Driver vehicle must be a non empty string'
       )
     })
-
-    it('can fetch rides', async () => {
-      await createRide()
-      await createRide()
-      const response = await request(app).get('/rides').send()
-      assert.equal(response.body[0].rideID, 1)
-      assert.equal(response.body.length, 2)
-    })
-    it('can get a specific ride', async () => {
-      await createRide()
-      await createRide()
-      const response = await request(app).get('/rides/2').send()
-      assert.equal(response.body[0].rideID, 2)
-      assert.equal(response.body.length, 1)
-    })
+  })
+  it('can create a new ride with valid inputs', async () => {
+    const response = await request(app).post('/rides').send(rider)
+    assert.equal(response.body[0].rideID, 1)
   })
 })
