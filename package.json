@@ -8,6 +8,8 @@
   },
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha tests",
+    "forever": "forever index.js",
+    "test:load": "npm run forever & sleep 10 && artillery run artillery/scenario.yaml && forever stopall",
     "start": "node index.js"
   },
   "pre-push": [
