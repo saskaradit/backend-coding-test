@@ -47,14 +47,29 @@ Healthy
 ```
 
 #### Rides
-Creates a rider document
+  
+Get all rider documents
 ````http
-POST /rides?pages=5
+GET /rides?pages=5
 ````
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
 | `page` | `number` |  page number, defaults to 1 |
 
+
+Get a specific rider document
+````http
+GET /rides/:id
+````
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `number` | **Required**. RideId |
+
+
+Creates a rider document
+````http
+POST /rides
+````
 **Requests Body**
 
 When creating a ride, client needs to fill these request body in the following format:
@@ -69,21 +84,6 @@ When creating a ride, client needs to fill these request body in the following f
     "driver_vehicle": String
 }
 ```
-
-
-Get all rider documents
-````http
-GET /rides
-````
-
-Get a specific rider document
-````http
-GET /rides/:id
-````
-| Parameter | Type | Description |
-| :--- | :--- | :--- |
-| `id` | `number` | **Required**. RideId |
-
 
 **Responses**
 
