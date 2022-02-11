@@ -7,9 +7,9 @@ const bodyParser = require('body-parser')
 const jsonParser = bodyParser.json()
 
 module.exports = (db) => {
-  app.get('/health', (req, res) => res.send('Healthy'))
+  // app.get('/health', async (req, res) => await res.send('Healthy'))
 
-  app.post('/rides', jsonParser, (req, res) => {
+  app.post('/rides', jsonParser, async (req, res) => {
     const startLatitude = Number(req.body.start_lat)
     const startLongitude = Number(req.body.start_long)
     const endLatitude = Number(req.body.end_lat)
@@ -75,7 +75,7 @@ module.exports = (db) => {
       req.body.driver_vehicle,
     ]
 
-    const result = db.run(
+    const result = await db.run(
       'INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)',
       values,
       function (err) {
@@ -104,12 +104,12 @@ module.exports = (db) => {
     )
   })
 
-  app.get('/rides', (req, res) => {
+  app.get('/rides', async (req, res) => {
     // default page to 1
     const query = req.query.page ? req.query.page : 1
     const currPage = (query - 1) * 2
     // using offset on db reduces performance drastically
-    db.all(
+    await db.all(
       `SELECT * FROM Rides WHERE rideId > ${currPage} ORDER BY rideID LIMIT 2`,
       function (err, rows) {
         if (err) {
@@ -131,8 +131,8 @@ module.exports = (db) => {
     )
   })
 
-  app.get('/rides/:id', (req, res) => {
-    db.all(
+  app.get('/rides/:id', async (req, res) => {
+    await db.all(
       `SELECT * FROM Rides WHERE rideID='${req.params.id}'`,
       function (err, rows) {
         if (err) {

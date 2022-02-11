@@ -1,16 +1,12 @@
 'use strict'
 
-const express = require('express')
-const app = express()
 const port = 8010
 
-const bodyParser = require('body-parser')
-const jsonParser = bodyParser.json()
-
-const sqlite3 = require('sqlite3').verbose()
-const db = new sqlite3.Database(':memory:')
+const db = require('./src/config/db.config')
 
 const buildSchemas = require('./src/schemas')
+const healthRoute = require('./src/routes/health')
+// const rideRoutes = require('./src/routes/rides')(db)
 
 const winston = require('winston')
 const logger = winston.createLogger({
@@ -22,17 +18,23 @@ const logger = winston.createLogger({
     new winston.transports.File({ filename: 'combined.log' }),
   ],
 })
+db.initSchema()
 
-db.serialize(() => {
-  buildSchemas(db)
+// db.serialize(() => {
+//   buildSchemas(db)
+// })
+const app = require('./src/app')(db.getDB())
+app.use(healthRoute)
+// app.use('/rides', rideRoutes)
 
-  const app = require('./src/app')(db)
+app.get('*', async (req, res) => {
+  res.status('404').json({ message: 'Not found' })
+})
 
-  app.listen(port, () => {
-    logger.log({
-      level: 'info',
-      message: `App started and listening on port ${port}`,
-    })
-    console.log(`App started and listening on port ${port}`)
+app.listen(port, () => {
+  logger.log({
+    level: 'info',
+    message: `App started and listening on port ${port}`,
   })
+  console.log(`App started and listening on port ${port}`)
 })
