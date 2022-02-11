@@ -4,7 +4,6 @@ const port = 8010
 
 const db = require('./src/config/db.config')
 
-const buildSchemas = require('./src/schemas')
 const healthRoute = require('./src/routes/health')
 // const rideRoutes = require('./src/routes/rides')(db)
 

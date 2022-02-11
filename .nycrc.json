@@ -3,6 +3,11 @@
   "include": [
     "src/**/*.js"
   ],
+  "exclude": [
+    "src/config/*.js",
+    "src/middlewares/*.js",
+    "src/routes/*.js"
+  ],
   "check-coverage": true,
   "branches": 80,
   "lines": 80,

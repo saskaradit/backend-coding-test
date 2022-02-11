@@ -8,6 +8,8 @@ const db = new sqlite3.Database(':memory:')
 
 const app = require('../src/app')(db)
 const buildSchemas = require('../src/schemas')
+const healthRoute = require('../src/routes/health')
+app.use(healthRoute)
 
 const createRide = () => {
   return request(app).post('/rides').send(rider)
