@@ -15,7 +15,13 @@ app.use('/rides', rideRoutes)
 app.use('/health', healthRoute)
 
 app.get('*', async (req, res) => {
-  res.status(404).json({ message: 'Not found' })
+  res
+    .status(404)
+    .json({ error_code: 'ROUTE_NOT_FOUND_ERROR', message: 'Not found' })
+  logger.log({
+    level: 'error',
+    message: `ROUTE_NOT_FOUND_ERROR`,
+  })
 })
 
 app.listen(port, () => {
