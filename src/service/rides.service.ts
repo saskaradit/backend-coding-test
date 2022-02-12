@@ -1,8 +1,10 @@
-const db = require('../config/db.config').getDB()
-const logger = require('../config/logger.config')
-const config = require('../config/config')
+import getDB from '../config/db.config'
+const db = getDB()
+import logger from '../config/logger.config'
+import Ride from '../models/ride'
+import config from '../config/config'
 
-async function create(ride) {
+async function create(ride: Ride) {
   var values = [
     ride.startLatitude,
     ride.startLongitude,
@@ -16,7 +18,7 @@ async function create(ride) {
     db.run(
       'INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)',
       values,
-      function (err) {
+      function (err: Error) {
         if (err) {
           reject({
             error_code: 'SERVER_ERROR',
@@ -32,8 +34,9 @@ async function create(ride) {
         }
         db.all(
           'SELECT * FROM Rides WHERE rideID = ?',
+          // @ts-ignore
           this.lastID,
-          function (err, rows) {
+          function (err: Error, rows: Array<JSON>) {
             if (err) {
               reject({
                 error_code: 'SERVER_ERROR',
@@ -61,7 +64,7 @@ async function fetch(page = 0) {
       `SELECT * FROM Rides WHERE rideId > ? ORDER BY rideID LIMIT ?`,
       page,
       config.limitRecord,
-      function (err, rows) {
+      function (err: Error, rows: Array<JSON>) {
         if (err) {
           reject({
             error_code: 'SERVER_ERROR',
@@ -87,35 +90,35 @@ async function fetch(page = 0) {
   })
 }
 
-async function get(id) {
+async function get(id: Number) {
   return new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM Rides WHERE rideID=?`, id, function (err, rows) {
-      if (err) {
-        reject({
-          error_code: 'SERVER_ERROR',
-          message: 'Unknown error',
-        })
-        logger.log({
-          level: 'error',
-          message: {
+    db.all(
+      `SELECT * FROM Rides WHERE rideID=?`,
+      id,
+      function (err: Error, rows: Array<JSON>) {
+        if (err) {
+          reject({
             error_code: 'SERVER_ERROR',
-            message: 'Unknown error ' + err,
-          },
-        })
+            message: 'Unknown error',
+          })
+          logger.log({
+            level: 'error',
+            message: {
+              error_code: 'SERVER_ERROR',
+              message: 'Unknown error ' + err,
+            },
+          })
+        }
+        if (rows.length === 0) {
+          reject({
+            error_code: 'RIDES_NOT_FOUND_ERROR',
+            message: 'Could not find any rides',
+          })
+        }
+        resolve(rows)
       }
-      if (rows.length === 0) {
-        reject({
-          error_code: 'RIDES_NOT_FOUND_ERROR',
-          message: 'Could not find any rides',
-        })
-      }
-      resolve(rows)
-    })
+    )
   })
 }
 
-module.exports = {
-  create,
-  fetch,
-  get,
-}
+export default { create, fetch, get }

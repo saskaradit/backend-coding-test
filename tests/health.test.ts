@@ -1,11 +1,8 @@
 'use strict'
 
-const request = require('supertest')
-const assert = require('assert')
-
-const express = require('express')
-
-const healthRoute = require('../src/routes/health')
+import request from 'supertest'
+import express from 'express'
+import healthRoute from '../src/routes/health'
 const app = express()
 app.use('/health', healthRoute)
 

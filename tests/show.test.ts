@@ -1,14 +1,15 @@
 'use strict'
 
-const request = require('supertest')
-const assert = require('assert')
+import request from 'supertest'
+import assert from 'assert'
 
-const db = require('../src/config/db.config').getDB()
-const express = require('express')
+import getDB from '../src/config/db.config'
+const db = getDB()
+import express from 'express'
 
-const rideRoutes = require('../src/routes/rides')
+import rideRoutes from '../src/routes/rides'
 const app = express()
-const resetDB = require('./setup')
+import resetDB from './setup'
 app.use('/rides', rideRoutes)
 
 const createRide = () => {
@@ -48,6 +49,12 @@ describe('GET /rides/:id', () => {
   it('throws an error if driver not found', async () => {
     await createRide()
     const response = await request(app).get('/rides/2').send()
+    assert.equal(response.body.error_code, 'RIDES_NOT_FOUND_ERROR')
+    assert.equal(response.body.message, 'Could not find any rides')
+  })
+  it('tries to sql inject', async () => {
+    await createRide()
+    const response = await request(app).get('/rides/drop table rides;').send()
     assert.equal(response.body.error_code, 'RIDES_NOT_FOUND_ERROR')
     assert.equal(response.body.message, 'Could not find any rides')
   })
