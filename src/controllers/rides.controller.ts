@@ -1,8 +1,9 @@
-const ridesService = require('../service/rides.service')
-const Ride = require('../models/ride')
-const logger = require('../config/logger.config')
+import ridesService from '../service/rides.service'
+import Ride from '../models/ride'
+import { Request, Response } from 'express'
+import logger from '../config/logger.config'
 
-async function create(req, res) {
+async function create(req: Request, res: Response) {
   const startLatitude = Number(req.body.start_lat)
   const startLongitude = Number(req.body.start_long)
   const endLatitude = Number(req.body.end_lat)
@@ -35,15 +36,13 @@ async function create(req, res) {
   }
 }
 
-async function fetch(req, res) {
+async function fetch(req: Request, res: Response) {
   // default page to 1
-  const query = req.query.page ? req.query.page : 1
+  const query: number = Number(req.query.page ? req.query.page : 1)
   const currPage = (query - 1) * 2
   // using offset on db reduces performance drastically
   try {
-    res
-      .set('content-type', 'application/json')
-      .send(await ridesService.fetch(currPage))
+    res.send(await ridesService.fetch(currPage))
   } catch (error) {
     res.send(error)
     logger.log({
@@ -53,10 +52,10 @@ async function fetch(req, res) {
   }
 }
 
-async function get(req, res) {
-  const id = req.params.id
+async function get(req: Request, res: Response) {
+  const id: number = Number(req.params.id)
   try {
-    res.set('content-type', 'application/json').send(await ridesService.get(id))
+    res.send(await ridesService.get(id))
   } catch (error) {
     res.send(error)
     logger.log({
@@ -67,3 +66,5 @@ async function get(req, res) {
 }
 
 module.exports = { create, fetch, get }
+
+export { create, fetch, get }

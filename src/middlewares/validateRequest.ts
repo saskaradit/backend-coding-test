@@ -1,4 +1,6 @@
-function validateRequest(req, res, next) {
+import { Request, Response, NextFunction } from 'express'
+
+function validateRequest(req: Request, res: Response, next: NextFunction) {
   if (!req.is('application/json')) {
     res.status(400).send({
       error_code: 'REQUEST_ERROR',
@@ -63,3 +65,5 @@ function validateRequest(req, res, next) {
 }
 
 module.exports = validateRequest
+
+export default validateRequest

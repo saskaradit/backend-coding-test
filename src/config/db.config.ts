@@ -1,6 +1,6 @@
 'use strict'
 const sqlite3 = require('sqlite3').verbose()
-let db
+let db: typeof sqlite3
 
 const createRideTableSchema = `
         CREATE TABLE Rides
@@ -16,16 +16,17 @@ const createRideTableSchema = `
         created DATETIME default CURRENT_TIMESTAMP
         )
     `
-module.exports = {
-  getDB: function () {
-    if (db) {
-      return db
-    } else {
-      db = new sqlite3.Database(':memory:')
-      db.serialize(() => {
-        db.run(createRideTableSchema)
-      })
-      return db
-    }
-  },
+
+const getDB = () => {
+  if (db) {
+    return db
+  } else {
+    db = new sqlite3.Database(':memory:')
+    db.serialize(() => {
+      db.run(createRideTableSchema)
+    })
+    return db
+  }
 }
+
+export default getDB

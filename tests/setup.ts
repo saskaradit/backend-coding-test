@@ -1,8 +1,8 @@
 // const db = require('../src/config/db.config')
 
-const resetDB = (db, done) => {
+const resetDB = (db: any, done: Mocha.Done) => {
   // Resets the table for each test, also resets the auto_increment to zero
-  db.run(`DROP TABLE IF EXISTS rides`, function (err) {
+  db.run(`DROP TABLE IF EXISTS rides`, function (err: Error) {
     if (err) {
       return done(err)
     }
@@ -21,7 +21,7 @@ const resetDB = (db, done) => {
             created DATETIME default CURRENT_TIMESTAMP
             )
         `
-  db.serialize((err) => {
+  db.serialize((err: Error) => {
     if (err) {
       return done(err)
     }
@@ -29,3 +29,4 @@ const resetDB = (db, done) => {
   })
 }
 module.exports = resetDB
+export default resetDB

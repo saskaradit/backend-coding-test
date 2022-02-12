@@ -1,14 +1,15 @@
 'use strict'
 
-const request = require('supertest')
-const assert = require('assert')
+import request from 'supertest'
+import assert from 'assert'
 
-const db = require('../src/config/db.config').getDB()
-const express = require('express')
+import getDB from '../src/config/db.config'
+const db = getDB()
+import express from 'express'
 
-const rideRoutes = require('../src/routes/rides')
+import rideRoutes from '../src/routes/rides'
 const app = express()
-const resetDB = require('./setup')
+import resetDB from './setup'
 app.use('/rides', rideRoutes)
 
 const createRide = () => {

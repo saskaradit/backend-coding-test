@@ -1,15 +1,15 @@
 'use strict'
-const config = require('./src/config/config')
-const express = require('express')
-const logger = require('./src/config/logger.config')
-const healthRoute = require('./src/routes/health')
-const rideRoutes = require('./src/routes/rides')
+import express, { Request, Response } from 'express'
+import logger from './src/config/logger.config'
+import config from './src/config/config'
+import healthRoute from './src/routes/health'
+import rideRoutes from './src/routes/rides'
 const app = express()
 
 app.use('/rides', rideRoutes)
 app.use('/health', healthRoute)
 
-app.get('*', async (req, res) => {
+app.get('*', async (req: Request, res: Response) => {
   res
     .status(404)
     .json({ error_code: 'ROUTE_NOT_FOUND_ERROR', message: 'Not found' })

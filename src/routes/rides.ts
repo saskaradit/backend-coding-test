@@ -1,12 +1,12 @@
 'use strict'
 
-const express = require('express')
+import express from 'express'
+import bodyParser from 'body-parser'
+import * as ridesController from '../controllers/rides.controller'
+import validateRequest from '../middlewares/validateRequest'
 const route = express.Router()
-const bodyParser = require('body-parser')
 const asyncMiddleware = require('../middlewares/asyncMiddleware')
 const jsonParser = bodyParser.json()
-const ridesController = require('../controllers/rides.controller')
-const validateRequest = require('../middlewares/validateRequest')
 
 route.post(
   '/',
@@ -19,4 +19,4 @@ route.get('/', asyncMiddleware(ridesController.fetch))
 
 route.get('/:id', asyncMiddleware(ridesController.get))
 
-module.exports = route
+export default route
