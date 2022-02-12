@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:9.11
+    steps:
+      - checkout
+      - run:
+          name: update-npm
+          command: "sudo npm install -g npm@latest"
+      - run:
+          name: install-dependencies
+          command: npm install
+      - run:
+          name: test
+          command: npm run test
+      - run:
+          name: start
+          command: npm run start
