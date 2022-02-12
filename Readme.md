@@ -3,17 +3,14 @@
 **This is a Ride API created using Node Express Framework.**
 The goal of these exercises are to assess your proficiency in software engineering that is related to the daily work that we do at Xendit. Please follow the instructions below to complete the assessment.
 
-## Tasks
 
-Below will be your set of tasks to accomplish. Please work on each of these tasks in order. Success criteria will be defined clearly for each task
+``` important: tests may sometimes fail, please re-run the test as the Database is in memory ```
 
 - [Xendit Coding Exercise](#xendit-coding-exercise)
-  - [Tasks](#tasks)
     - [Documentation](#documentation)
       - [API-Docs](#api-docs)
       - [Healthcheck](#healthcheck)
       - [Rides](#rides)
-      - [Success Criteria](#success-criteria)
 
 ### Documentation
 
@@ -103,8 +100,5 @@ Rides API returns the error response in the following format:
     "message": "error message"
 }
 ```
-
-#### Success Criteria
-1. **[BONUS]** Add integration to CI such as Travis or Circle
 
 
