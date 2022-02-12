@@ -1,4 +1,4 @@
-class Rider {
+class Ride {
   constructor(
     startLatitude,
     startLongitude,
@@ -18,4 +18,4 @@ class Rider {
   }
 }
 
-module.exports = Rider
+module.exports = Ride

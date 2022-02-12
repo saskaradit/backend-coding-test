@@ -3,7 +3,7 @@
 const request = require('supertest')
 const assert = require('assert')
 const express = require('express')
-const db = require('../src/config/db.config')
+const db = require('../src/config/db.config').getDB()
 
 const rideRoutes = require('../src/routes/rides')
 const app = express()

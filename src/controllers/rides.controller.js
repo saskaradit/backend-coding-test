@@ -56,9 +56,9 @@ async function fetch(req, res) {
 async function get(req, res) {
   const id = req.params.id
   try {
-    res.send(await ridesService.get(id))
+    res.set('content-type', 'application/json').send(await ridesService.get(id))
   } catch (error) {
-    res.set('content-type', 'application/json').send(error)
+    res.send(error)
     logger.log({
       level: 'error',
       message: `Error while getting the ride`,

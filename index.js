@@ -1,16 +1,11 @@
 'use strict'
-
 const config = require('./src/config/config')
-
-const healthRoute = require('./src/routes/health')
-const rideRoutes = require('./src/routes/rides')
 const express = require('express')
 const logger = require('./src/config/logger.config')
-
-const db = require('./src/config/db.config')
+const healthRoute = require('./src/routes/health')
+const rideRoutes = require('./src/routes/rides')
 const app = express()
 
-db.initSchema()
 app.use('/rides', rideRoutes)
 app.use('/health', healthRoute)
 
