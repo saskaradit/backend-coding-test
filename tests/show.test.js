@@ -51,4 +51,10 @@ describe('GET /rides/:id', () => {
     assert.equal(response.body.error_code, 'RIDES_NOT_FOUND_ERROR')
     assert.equal(response.body.message, 'Could not find any rides')
   })
+  it('tries to sql inject', async () => {
+    await createRide()
+    const response = await request(app).get('/rides/drop table rides;').send()
+    assert.equal(response.body.error_code, 'RIDES_NOT_FOUND_ERROR')
+    assert.equal(response.body.message, 'Could not find any rides')
+  })
 })

@@ -13,45 +13,47 @@ async function create(ride) {
     ride.driverVehicle,
   ]
   return new Promise((resolve, reject) => {
-    db.run(
-      'INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      values,
-      function (err) {
-        if (err) {
-          reject({
-            error_code: 'SERVER_ERROR',
-            message: 'Unknown error',
-          })
-          logger.log({
-            level: 'error',
-            message: {
+    db.serialize(() => {
+      db.run(
+        'INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        values,
+        function (err) {
+          if (err) {
+            reject({
               error_code: 'SERVER_ERROR',
               message: 'Unknown error',
-            },
-          })
-        }
-        db.all(
-          'SELECT * FROM Rides WHERE rideID = ?',
-          this.lastID,
-          function (err, rows) {
-            if (err) {
-              reject({
+            })
+            logger.log({
+              level: 'error',
+              message: {
                 error_code: 'SERVER_ERROR',
-                message: 'Unknown error ' + err,
-              })
-              logger.log({
-                level: 'error',
-                message: {
-                  error_code: 'SERVER_ERROR',
-                  message: 'Unknown error',
-                },
-              })
-            }
-            resolve(rows)
+                message: 'Unknown error',
+              },
+            })
           }
-        )
-      }
-    )
+          db.all(
+            'SELECT * FROM Rides WHERE rideID = ?',
+            this.lastID,
+            function (err, rows) {
+              if (err) {
+                reject({
+                  error_code: 'SERVER_ERROR',
+                  message: 'Unknown error ' + err,
+                })
+                logger.log({
+                  level: 'error',
+                  message: {
+                    error_code: 'SERVER_ERROR',
+                    message: 'Unknown error',
+                  },
+                })
+              }
+              resolve(rows)
+            }
+          )
+        }
+      )
+    })
   })
 }
 

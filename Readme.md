@@ -24,13 +24,10 @@ Below will be your set of tasks to accomplish. Please work on each of these task
       - [Success Criteria](#success-criteria)
     - [Implement Tooling](#implement-tooling)
       - [Success Criteria](#success-criteria-1)
-    - [Implement Pagination](#implement-pagination)
-    - [Refactoring](#refactoring)
-      - [Success Criteria](#success-criteria-2)
     - [Security](#security)
-      - [Success Criteria](#success-criteria-3)
+      - [Success Criteria](#success-criteria-2)
     - [Load Testing](#load-testing)
-      - [Success Criteria](#success-criteria-4)
+      - [Success Criteria](#success-criteria-3)
 
 ### Documentation
 
@@ -116,9 +113,7 @@ Rides API returns the error response in the following format:
 
 
 #### Success Criteria
-
-1. A pull request against `master` of your fork with a clear description of the change and purpose and merge it
-2. **[BONUS]** Create an easy way to deploy and view the documentation in a web format and include instructions to do so
+1. **[BONUS]** Create an easy way to deploy and view the documentation in a web format and include instructions to do so
 
 ### Implement Tooling
 
@@ -130,41 +125,12 @@ Please implement the following tooling:
 4. `winston` - for logging
 
 #### Success Criteria
+1. **[BONUS]** Add integration to CI such as Travis or Circle
+2. **[BONUS]** Add Typescript support
 
-1. Create a pull request against `master` of your fork with the new tooling and merge it
-    1. `eslint` should have an opinionated format
-    2. `nyc` should aim for test coverage of `80%` across lines, statements, and branches
-    3. `pre-push` should run the tests before allowing pushing using `git`
-    4. `winston` should be used to replace console logs and all errors should be logged as well. Logs should go to disk.
-2. Ensure that tooling is connected to `npm test`
-3. Create a separate pull request against `master` of your fork with the linter fixes and merge it
-4. Create a separate pull request against `master` of your fork to increase code coverage to acceptable thresholds and merge it
-5. **[BONUS]** Add integration to CI such as Travis or Circle
-6. **[BONUS]** Add Typescript support
 
-### Implement Pagination
-
-Please implement pagination to retrieve pages of the resource `rides`.
-
-1. Create a pull request against `master` with your changes to the `GET /rides` endpoint to support pagination including:
-    1. Code changes
-    2. Tests
-    3. Documentation
-2. Merge the pull request
-
-### Refactoring
-
-Please implement the following refactors of the code:
-
-1. Convert callback style code to use `async/await`
-2. Reduce complexity at top level control flow logic and move logic down and test independently
 3. **[BONUS]** Split between functional and imperative function and test independently
 
-#### Success Criteria
-
-1. A pull request against `master` of your fork for each of the refactors above with:
-    1. Code changes
-    2. Tests
 
 ### Security
 
