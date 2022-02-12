@@ -4,10 +4,14 @@ import logger from './src/config/logger.config'
 import config from './src/config/config'
 import healthRoute from './src/routes/health'
 import rideRoutes from './src/routes/rides'
+import swaggerDocs from './src/config/swagger.config'
+import swaggerUi from 'swagger-ui-express'
+
 const app = express()
 
 app.use('/rides', rideRoutes)
 app.use('/health', healthRoute)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.get('*', async (req: Request, res: Response) => {
   res
